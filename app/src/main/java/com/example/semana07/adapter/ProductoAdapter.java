@@ -55,6 +55,7 @@ public class ProductoAdapter extends ArrayAdapter<Producto> {
 
         Glide.with(context).load(objProducto.getImage()).into(imgFoto);
 
+
         return row;
     }
 }

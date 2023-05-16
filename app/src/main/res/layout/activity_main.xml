@@ -25,9 +25,13 @@
         android:text="Listar"
         />
 
-    <ListView
-        android:id="@+id/lstProductos"
+    <GridView
+        android:id="@+id/gridProductos"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:numColumns="2"
+        android:horizontalSpacing="6dp"
+        android:verticalSpacing="14dp"
         />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,10 +1,14 @@
 package com.example.semana07;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import com.example.semana07.adapter.ProductoAdapter;
@@ -25,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnListar;
 
     //ListView
-    ListView lstProductos;
+    GridView gridProductos;
     ArrayList<Producto> data = new ArrayList<Producto>();
     ProductoAdapter adpatador;
 
@@ -39,16 +43,40 @@ public class MainActivity extends AppCompatActivity {
 
         btnListar = findViewById(R.id.btnLista);
 
-        lstProductos = findViewById(R.id.lstProductos);
+        gridProductos = findViewById(R.id.gridProductos);
         adpatador = new ProductoAdapter(this, R.layout.activity_item_producto, data);
-        lstProductos.setAdapter(adpatador);
+        gridProductos.setAdapter(adpatador);
 
         serviceProducto = ConnectionRest.getConnection().create(ServiceProducto.class);
+
 
         btnListar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listaProductos();
+            }
+        });
+
+        gridProductos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Producto objProducto = data.get(position);
+
+                String title = objProducto.getTitle();
+                String description = objProducto.getDescription();
+                String category = objProducto.getCategory();
+                double price = objProducto.getPrice();
+                double rate = objProducto.getRating().getRate();
+                int count = objProducto.getRating().getCount();
+
+                String msg = description;
+                msg += "\n\n";
+                msg += "Category : " + category + "\n";
+                msg += "Price : " + price + "\n";
+                msg += "Rate : " + rate + "\n";
+                msg += "Count : " + count + "\n";
+
+                mensajeAlert(title, msg);
             }
         });
     }
@@ -71,6 +99,19 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void mensajeAlert(String title, String msg){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setMessage(msg);
+        alertDialog.setTitle(title);
+        alertDialog.setPositiveButton("Comprar",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 
 }
